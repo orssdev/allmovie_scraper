@@ -3,8 +3,8 @@ import scrapy
 class AllMovie_Scrapper(scrapy.Spider):
     name = 'allmovie'
 
-    
     async def start(self):
+
         urls = [
             "https://www.allmovie.com/genre/action-adventure-ag100",
             "https://www.allmovie.com/genre/animation-ag102",
@@ -34,3 +34,9 @@ class AllMovie_Scrapper(scrapy.Spider):
             "https://www.allmovie.com/genre/war-ag126",
             "https://www.allmovie.com/genre/western-ag127",
         ]
+
+        for url in urls:
+            yield scrapy.Request(url=url, callback=self.parse)
+    
+    def parse(self, response):
+        yield {'Hello': "You"}
