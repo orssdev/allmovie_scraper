@@ -61,7 +61,7 @@ class AllMovie_Scrapper(scrapy.Spider):
         
         next_href = response.css('.next a::attr(href)').get()
         page_count = response.meta.get('page_count', 1)
-        if next_href:
+        if next_href and page_count < 50:
             next_url = 'https://www.allmovie.com' + next_href
             yield scrapy.Request(
                 url=next_url,
@@ -118,7 +118,5 @@ class AllMovie_Scrapper(scrapy.Spider):
             'mpaa_rating': mpaa_rating,
             'budget': budget,
             'box_office': box_office,
-            'themes': themes,
-            'user_count': user_count,
-            'user_rating': user_rating
+            'themes': themes
         }
