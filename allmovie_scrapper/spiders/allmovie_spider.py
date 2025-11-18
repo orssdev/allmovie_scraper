@@ -1,8 +1,6 @@
 import json
 import scrapy
 import os
-# from selenium import webdriver
-# from selenium.webdriver.common.by import By
 
 
 class AllMovie_Scrapper(scrapy.Spider):
@@ -22,31 +20,31 @@ class AllMovie_Scrapper(scrapy.Spider):
             
         urls = [
             "https://www.allmovie.com/genre/action-adventure-ag100",
-            # "https://www.allmovie.com/genre/animation-ag102",
-            # "https://www.allmovie.com/genre/anime-ag103",
-            # "https://www.allmovie.com/genre/avant-garde-experimental-ag104",
-            # "https://www.allmovie.com/genre/biography-ag105",
-            # "https://www.allmovie.com/genre/childrens-ag106",
-            # "https://www.allmovie.com/genre/comedy-ag107",
-            # "https://www.allmovie.com/genre/comedy-drama-ag108",
-            # "https://www.allmovie.com/genre/crime-ag109",
-            # "https://www.allmovie.com/genre/documentary-ag110",
-            # "https://www.allmovie.com/genre/drama-ag111",
-            # "https://www.allmovie.com/genre/epic-ag112",
-            # "https://www.allmovie.com/genre/family-ag113",
-            # "https://www.allmovie.com/genre/fantasy-ag114",
-            # "https://www.allmovie.com/genre/history-ag115",
-            # "https://www.allmovie.com/genre/horror-ag116",
-            # "https://www.allmovie.com/genre/music-ag117",
-            # "https://www.allmovie.com/genre/mystery-suspense-ag118",
-            # "https://www.allmovie.com/genre/romance-ag120",
-            # "https://www.allmovie.com/genre/science-fiction-ag121",
-            # "https://www.allmovie.com/genre/silent-film-ag122",
-            # "https://www.allmovie.com/genre/sports-ag123",
-            # "https://www.allmovie.com/genre/spy-film-ag124",
-            # "https://www.allmovie.com/genre/thriller-ag125",
-            # "https://www.allmovie.com/genre/war-ag126",
-            # "https://www.allmovie.com/genre/western-ag127",
+            "https://www.allmovie.com/genre/animation-ag102",
+            "https://www.allmovie.com/genre/anime-ag103",
+            "https://www.allmovie.com/genre/avant-garde-experimental-ag104",
+            "https://www.allmovie.com/genre/biography-ag105",
+            "https://www.allmovie.com/genre/childrens-ag106",
+            "https://www.allmovie.com/genre/comedy-ag107",
+            "https://www.allmovie.com/genre/comedy-drama-ag108",
+            "https://www.allmovie.com/genre/crime-ag109",
+            "https://www.allmovie.com/genre/documentary-ag110",
+            "https://www.allmovie.com/genre/drama-ag111",
+            "https://www.allmovie.com/genre/epic-ag112",
+            "https://www.allmovie.com/genre/family-ag113",
+            "https://www.allmovie.com/genre/fantasy-ag114",
+            "https://www.allmovie.com/genre/history-ag115",
+            "https://www.allmovie.com/genre/horror-ag116",
+            "https://www.allmovie.com/genre/music-ag117",
+            "https://www.allmovie.com/genre/mystery-suspense-ag118",
+            "https://www.allmovie.com/genre/romance-ag120",
+            "https://www.allmovie.com/genre/science-fiction-ag121",
+            "https://www.allmovie.com/genre/silent-film-ag122",
+            "https://www.allmovie.com/genre/sports-ag123",
+            "https://www.allmovie.com/genre/spy-film-ag124",
+            "https://www.allmovie.com/genre/thriller-ag125",
+            "https://www.allmovie.com/genre/war-ag126",
+            "https://www.allmovie.com/genre/western-ag127",
         ]
 
         for url in urls:
@@ -58,7 +56,19 @@ class AllMovie_Scrapper(scrapy.Spider):
         urls = ['https://www.allmovie.com' + href for href in hrefs]
 
         for url in urls:
-            yield scrapy.Request(url=url, callback=self.movie_parse)
+            if url not in self.seen_url:
+                yield scrapy.Request(url=url, callback=self.movie_parse)
+        
+        next_href = response.css('.next a::attr(href)').get()
+        page_count = response.meta.get('page_count', 1)
+        if next_href:
+            next_url = 'https://www.allmovie.com' + next_href
+            yield scrapy.Request(
+                url=next_url,
+                callback=self.parse,
+                meta={'page_count': page_count + 1}
+            )
+            
 
 
     def movie_parse(self, response):
@@ -95,11 +105,6 @@ class AllMovie_Scrapper(scrapy.Spider):
         if box_office:
             box_office = int(box_office.strip().replace("$", "").replace(",", ""))
         themes = response.css('.themes .charactList a::text').getall()
-        # driver = webdriver.Chrome()
-        # driver.get(url)
-        # user_count = int(driver.find_element(By.CSS_SELECTOR, '.average .average-user-rating-count').text)
-        # if user_count > 0:
-        #     user_rating = int(driver.find_element(By.CSS_SELECTOR, '.average .average-user-rating').get_attribute('class').split()[1].split('-')[-1])
         yield {
             'url': url,
             'title': title,
