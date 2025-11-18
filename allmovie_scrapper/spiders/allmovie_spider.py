@@ -125,4 +125,4 @@ class AllMovie_Scrapper(scrapy.Spider):
                 'themes': themes
             }
         except Exception as e:
-            yield {'error': e}
+            yield {'error': str(e)}
