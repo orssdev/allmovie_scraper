@@ -1,8 +1,8 @@
 import json
-import re
 import scrapy
 import os
-import time
+# from selenium import webdriver
+# from selenium.webdriver.common.by import By
 
 
 class AllMovie_Scrapper(scrapy.Spider):
@@ -95,7 +95,12 @@ class AllMovie_Scrapper(scrapy.Spider):
         if box_office:
             box_office = int(box_office.strip().replace("$", "").replace(",", ""))
         themes = response.css('.themes .charactList a::text').getall()
-        movie_data = {
+        # driver = webdriver.Chrome()
+        # driver.get(url)
+        # user_count = int(driver.find_element(By.CSS_SELECTOR, '.average .average-user-rating-count').text)
+        # if user_count > 0:
+        #     user_rating = int(driver.find_element(By.CSS_SELECTOR, '.average .average-user-rating').get_attribute('class').split()[1].split('-')[-1])
+        yield {
             'url': url,
             'title': title,
             'poster': poster,
@@ -108,26 +113,7 @@ class AllMovie_Scrapper(scrapy.Spider):
             'mpaa_rating': mpaa_rating,
             'budget': budget,
             'box_office': box_office,
-            'themes': themes
+            'themes': themes,
+            'user_count': user_count,
+            'user_rating': user_rating
         }
-
-        movie_id = re.search(r'(\d+)$', url).group(1)
-        timestamp = int(time.time() * 1000)
-        fetch_url = f'https://www.allmovie.com/rating/average/{movie_id}?_={timestamp}'
-        fetch_headers = {
-            'User-Agent': os.getenv('USER_AGENT'),
-            'Referer': url,
-        }
-
-        yield scrapy.Request(url=fetch_url, headers=fetch_headers, callback=self.rating_fetch, meta={'movie_data': movie_data})
-    
-    def rating_fetch(self, response):
-        data = response.meta['movie_data']
-        try:
-            ratings = response.json()[0]
-            data['user_count'] = ratings.get('count')
-            data['user_rating'] = ratings.get('average')
-        except (ValueError, IndexError, KeyError):
-            data['user_count'] = None
-            data['user_rating'] = None
-        yield data
