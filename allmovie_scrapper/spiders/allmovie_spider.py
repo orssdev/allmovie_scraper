@@ -74,51 +74,54 @@ class AllMovie_Scrapper(scrapy.Spider):
 
 
     def movie_parse(self, response):
-        url = response.url
-        title = response.css('.movie-title::text').get().strip()
-        poster = response.css('.poster.desktopOnly img::attr(src)').get()
-        links = response.css('.movie-director a::attr(href)').getall()
-        names = response.css('.movie-director a::text').getall()
-        directors = [{'name': name.strip(), 'url': response.urljoin(link)} for name, link in zip(names,links)] if len(names) > 0 else None
-        genres = response.css('.details .header-movie-genres a::text').getall()
-        subgenres = response.css('.details .header-movie-subgenres a::text').getall()
-        subgenres = subgenres if len(subgenres) > 0 else None
-        details = response.css('.details span > span::text').getall()
-        release = None
-        runtime = None
-        country = None
-        mpaa_rating = None
-        for i, detail in enumerate(details):
-            if i == 0:
-                release = detail
-            elif i == 1:
-                runtime = int(detail.split()[0])
-            elif i == 2:
-                if detail in self.mpaa:
-                    mpaa_rating = detail
+        try:
+            url = response.url
+            title = response.css('.movie-title::text').get().strip()
+            poster = response.css('.poster.desktopOnly img::attr(src)').get()
+            links = response.css('.movie-director a::attr(href)').getall()
+            names = response.css('.movie-director a::text').getall()
+            directors = [{'name': name.strip(), 'url': response.urljoin(link)} for name, link in zip(names,links)] if len(names) > 0 else None
+            genres = response.css('.details .header-movie-genres a::text').getall()
+            subgenres = response.css('.details .header-movie-subgenres a::text').getall()
+            subgenres = subgenres if len(subgenres) > 0 else None
+            details = response.css('.details span > span::text').getall()
+            release = None
+            runtime = None
+            country = None
+            mpaa_rating = None
+            for i, detail in enumerate(details):
+                if i == 0:
+                    release = detail
+                elif i == 1:
+                    runtime = int(detail.split()[0])
+                elif i == 2:
+                    if detail in self.mpaa:
+                        mpaa_rating = detail
+                    else:
+                        country = detail
                 else:
-                    country = detail
-            else:
-                mpaa_rating = detail
-        budget = response.css('.budget .charactList::text').get()
-        if budget:
-            budget = int(budget.strip().replace("$", "").replace(",", ""))
-        box_office = response.css('.box-office .charactList::text').get()
-        if box_office:
-            box_office = int(box_office.strip().replace("$", "").replace(",", ""))
-        themes = response.css('.themes .charactList a::text').getall()
-        yield {
-            'url': url,
-            'title': title,
-            'poster': poster,
-            'directors': directors,
-            'genres': genres,
-            'subgenres': subgenres,
-            'release': release,
-            'runtime': runtime,
-            'country': country,
-            'mpaa_rating': mpaa_rating,
-            'budget': budget,
-            'box_office': box_office,
-            'themes': themes
-        }
+                    mpaa_rating = detail
+            budget = response.css('.budget .charactList::text').get()
+            if budget:
+                budget = int(budget.strip().replace("$", "").replace(",", ""))
+            box_office = response.css('.box-office .charactList::text').get()
+            if box_office:
+                box_office = int(box_office.strip().replace("$", "").replace(",", ""))
+            themes = response.css('.themes .charactList a::text').getall()
+            yield {
+                'url': url,
+                'title': title,
+                'poster': poster,
+                'directors': directors,
+                'genres': genres,
+                'subgenres': subgenres,
+                'release': release,
+                'runtime': runtime,
+                'country': country,
+                'mpaa_rating': mpaa_rating,
+                'budget': budget,
+                'box_office': box_office,
+                'themes': themes
+            }
+        except Exception as e:
+            yield {'error': e}
