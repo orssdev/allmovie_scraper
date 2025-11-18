@@ -59,6 +59,7 @@ class AllMovie_Scrapper(scrapy.Spider):
 
         for url in urls:
             if url not in self.seen_url:
+                self.seen_url.add(url)
                 yield scrapy.Request(url=url, callback=self.movie_parse)
         
         next_href = response.css('.next a::attr(href)').get()
