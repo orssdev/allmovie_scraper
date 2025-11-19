@@ -1,4 +1,5 @@
 import json
+import re
 import scrapy
 
 
@@ -76,6 +77,7 @@ class AllMovie_Scraper(scrapy.Spider):
         try:
             url = response.url
             title = response.css('.movie-title::text').get().strip()
+            movie_id = re.search(r'(\d+)$', url).group(1)
             poster = response.css('.poster.desktopOnly img::attr(src)').get()
             links = response.css('.movie-director a::attr(href)').getall()
             names = response.css('.movie-director a::text').getall()
@@ -110,6 +112,7 @@ class AllMovie_Scraper(scrapy.Spider):
             yield {
                 'url': url,
                 'title': title,
+                'id': movie_id,
                 'poster_url': [poster] if poster else [],
                 'directors': directors,
                 'genres': genres,
