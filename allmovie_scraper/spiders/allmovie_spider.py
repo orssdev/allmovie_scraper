@@ -20,31 +20,31 @@ class AllMovie_Scraper(scrapy.Spider):
             
         urls = [
             "https://www.allmovie.com/genre/action-adventure-ag100",
-            # "https://www.allmovie.com/genre/animation-ag102",
-            # "https://www.allmovie.com/genre/anime-ag103",
-            # "https://www.allmovie.com/genre/avant-garde-experimental-ag104",
-            # "https://www.allmovie.com/genre/biography-ag105",
-            # "https://www.allmovie.com/genre/childrens-ag106",
-            # "https://www.allmovie.com/genre/comedy-ag107",
-            # "https://www.allmovie.com/genre/comedy-drama-ag108",
-            # "https://www.allmovie.com/genre/crime-ag109",
-            # "https://www.allmovie.com/genre/documentary-ag110",
-            # "https://www.allmovie.com/genre/drama-ag111",
-            # "https://www.allmovie.com/genre/epic-ag112",
-            # "https://www.allmovie.com/genre/family-ag113",
-            # "https://www.allmovie.com/genre/fantasy-ag114",
-            # "https://www.allmovie.com/genre/history-ag115",
-            # "https://www.allmovie.com/genre/horror-ag116",
-            # "https://www.allmovie.com/genre/music-ag117",
-            # "https://www.allmovie.com/genre/mystery-suspense-ag118",
-            # "https://www.allmovie.com/genre/romance-ag120",
-            # "https://www.allmovie.com/genre/science-fiction-ag121",
-            # "https://www.allmovie.com/genre/silent-film-ag122",
-            # "https://www.allmovie.com/genre/sports-ag123",
-            # "https://www.allmovie.com/genre/spy-film-ag124",
-            # "https://www.allmovie.com/genre/thriller-ag125",
-            # "https://www.allmovie.com/genre/war-ag126",
-            # "https://www.allmovie.com/genre/western-ag127",
+            "https://www.allmovie.com/genre/animation-ag102",
+            "https://www.allmovie.com/genre/anime-ag103",
+            "https://www.allmovie.com/genre/avant-garde-experimental-ag104",
+            "https://www.allmovie.com/genre/biography-ag105",
+            "https://www.allmovie.com/genre/childrens-ag106",
+            "https://www.allmovie.com/genre/comedy-ag107",
+            "https://www.allmovie.com/genre/comedy-drama-ag108",
+            "https://www.allmovie.com/genre/crime-ag109",
+            "https://www.allmovie.com/genre/documentary-ag110",
+            "https://www.allmovie.com/genre/drama-ag111",
+            "https://www.allmovie.com/genre/epic-ag112",
+            "https://www.allmovie.com/genre/family-ag113",
+            "https://www.allmovie.com/genre/fantasy-ag114",
+            "https://www.allmovie.com/genre/history-ag115",
+            "https://www.allmovie.com/genre/horror-ag116",
+            "https://www.allmovie.com/genre/music-ag117",
+            "https://www.allmovie.com/genre/mystery-suspense-ag118",
+            "https://www.allmovie.com/genre/romance-ag120",
+            "https://www.allmovie.com/genre/science-fiction-ag121",
+            "https://www.allmovie.com/genre/silent-film-ag122",
+            "https://www.allmovie.com/genre/sports-ag123",
+            "https://www.allmovie.com/genre/spy-film-ag124",
+            "https://www.allmovie.com/genre/thriller-ag125",
+            "https://www.allmovie.com/genre/war-ag126",
+            "https://www.allmovie.com/genre/western-ag127",
         ]
 
         for url in urls:
@@ -62,7 +62,7 @@ class AllMovie_Scraper(scrapy.Spider):
         
         next_href = response.css('.next a::attr(href)').get()
         page_count = response.meta.get('page_count', 1)
-        if next_href and page_count < 1:
+        if next_href and page_count <= 100:
             next_url = 'https://www.allmovie.com' + next_href
             yield scrapy.Request(
                 url=next_url,
@@ -110,8 +110,7 @@ class AllMovie_Scraper(scrapy.Spider):
             yield {
                 'url': url,
                 'title': title,
-                'poster': poster,
-                'image_urls': [poster] if poster else [],
+                'poster_url': [poster] if poster else [],
                 'directors': directors,
                 'genres': genres,
                 'subgenres': subgenres,
