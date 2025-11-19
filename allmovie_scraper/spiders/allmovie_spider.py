@@ -1,6 +1,5 @@
 import json
 import scrapy
-import os
 
 
 class AllMovie_Scrapper(scrapy.Spider):
@@ -10,13 +9,12 @@ class AllMovie_Scrapper(scrapy.Spider):
 
     async def start(self):
         try:
-            path = os.path.join('..', '..', 'data.jsonl')
-            with open(path, 'r') as lines:
+            with open('data.jsonl', 'r') as lines:
                 for line in lines:
                     data = json.loads(line)
                     url = data.get('url')
                     if url:
-                        self.seen_url.add()
+                        self.seen_url.add(url)
         except FileNotFoundError:
             pass
             
@@ -64,7 +62,7 @@ class AllMovie_Scrapper(scrapy.Spider):
         
         next_href = response.css('.next a::attr(href)').get()
         page_count = response.meta.get('page_count', 1)
-        if next_href and page_count <= 50:
+        if next_href and page_count < 1:
             next_url = 'https://www.allmovie.com' + next_href
             yield scrapy.Request(
                 url=next_url,
@@ -113,6 +111,7 @@ class AllMovie_Scrapper(scrapy.Spider):
                 'url': url,
                 'title': title,
                 'poster': poster,
+                'image_urls': [poster] if poster else [],
                 'directors': directors,
                 'genres': genres,
                 'subgenres': subgenres,
@@ -125,4 +124,4 @@ class AllMovie_Scrapper(scrapy.Spider):
                 'themes': themes
             }
         except Exception as e:
-            yield {'error': str(e)}
+            yield {'error': e}

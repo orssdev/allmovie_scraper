@@ -95,3 +95,9 @@ HTTPCACHE_ENABLED = True
 # Set settings whose default value is deprecated to a future-proof value
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
+
+ITEM_PIPELINES = {
+    'allmovie_scraper.pipelines.CustomImagesPipeline': 1,
+}
+
+IMAGES_STORE = 'posters'
