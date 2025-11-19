@@ -4,3 +4,4 @@
 *.jsonl
 __pycache__/
 .scrapy/
+posters/
