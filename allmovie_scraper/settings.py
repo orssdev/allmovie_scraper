@@ -3,7 +3,7 @@ import os
 
 load_dotenv()
 
-# Scrapy settings for allmovie_scrapper project
+# Scrapy settings for allmovie_scraper project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -12,10 +12,10 @@ load_dotenv()
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = "allmovie_scrapper"
+BOT_NAME = "allmovie_scraper"
 
-SPIDER_MODULES = ["allmovie_scrapper.spiders"]
-NEWSPIDER_MODULE = "allmovie_scrapper.spiders"
+SPIDER_MODULES = ["allmovie_scraper.spiders"]
+NEWSPIDER_MODULE = "allmovie_scraper.spiders"
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
@@ -50,13 +50,13 @@ DOWNLOAD_DELAY = 3
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    "allmovie_scrapper.middlewares.AllmovieScrapperSpiderMiddleware": 543,
+#    "allmovie_scraper.middlewares.AllmoviescraperSpiderMiddleware": 543,
 #}
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
-#    "allmovie_scrapper.middlewares.AllmovieScrapperDownloaderMiddleware": 543,
+#    "allmovie_scraper.middlewares.AllmoviescraperDownloaderMiddleware": 543,
 #}
 
 # Enable or disable extensions
@@ -68,7 +68,7 @@ DOWNLOAD_DELAY = 3
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 #ITEM_PIPELINES = {
-#    "allmovie_scrapper.pipelines.AllmovieScrapperPipeline": 300,
+#    "allmovie_scraper.pipelines.AllmoviescraperPipeline": 300,
 #}
 
 # Enable and configure the AutoThrottle extension (disabled by default)

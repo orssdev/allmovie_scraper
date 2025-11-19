@@ -11,7 +11,7 @@ from urllib.parse import urlparse
 import os
 
 
-class AllmovieScrapperPipeline:
+class AllmovieScraperPipeline:
     def process_item(self, item, spider):
         return item
 

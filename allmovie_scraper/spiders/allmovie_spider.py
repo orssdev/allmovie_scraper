@@ -2,7 +2,7 @@ import json
 import scrapy
 
 
-class AllMovie_Scrapper(scrapy.Spider):
+class AllMovie_Scraper(scrapy.Spider):
     name = 'allmovie'
     seen_url = set()
     mpaa = set(['G', 'PG', 'PG-13', 'R', 'NC-17', 'NR', 'TV-Y', 'TV-Y7', 'TV-G', 'TV-PG', 'TV-14', 'TV-MA'])
