@@ -1,8 +1,8 @@
 import pandas as pd
 import os
 
-data = pd.read_json('data.jsonl', lines=True).sort_values(by='id').reset_index(drop=True)
-users = pd.read_json('users.jsonl', lines=True).sort_values(by='id').reset_index(drop=True)
+data = pd.read_json(os.path.join('..', 'data.jsonl'), lines=True).sort_values(by='id').reset_index(drop=True)
+users = pd.read_json(os.path.join('..', 'users.jsonl'), lines=True).sort_values(by='id').reset_index(drop=True)
 
 combined = data.join(users.set_index('id'), on='id')
 filtered = combined[combined['user_count'].notna()]
@@ -10,4 +10,4 @@ result = filtered.drop(columns=['url', 'poster_url', 'country', 'themes', 'subge
 result['directors'] = result['directors'].apply(lambda x: [d['name'] for d in x] if isinstance(x, list) else [])
 
 print(result)
-result.to_csv('data.csv', index=False) 
+result.to_csv(os.path.join('..', 'data.csv'), index=False) 

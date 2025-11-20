@@ -37,7 +37,7 @@ driver = webdriver.Chrome(options=options)
 seen_user = set()
 
 try:
-    with open('users.jsonl', 'r') as lines:
+    with open(os.path.join('..', 'users.jsonl'), 'r') as lines:
         for line in lines:
             data = json.loads(line)
             movie_id = data.get('id')
@@ -47,7 +47,7 @@ except:
     pass
 
 try:
-    with open('data.jsonl', 'r') as lines, open('users.jsonl', 'a') as file:
+    with open(os.path.join('..','data.jsonl'), 'r') as lines, open(os.path.join('..', 'users.jsonl'), 'a') as file:
         for line in lines:
             data = json.loads(line)
             movie_id = data.get('id')
