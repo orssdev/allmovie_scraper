@@ -1,4 +1,5 @@
 import json
+import time
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
@@ -73,6 +74,7 @@ try:
 
                     if flag:
                         file.write(json.dumps({'id': movie_id, 'user_count': user_count, 'user_rating': user_rating}) + '\n')
+                time.sleep(3)
         driver.quit()
 except FileNotFoundError:
     print('data.jsonl not found')
