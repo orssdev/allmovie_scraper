@@ -61,7 +61,10 @@ try:
                             EC.presence_of_element_located((By.CSS_SELECTOR, ".average-user-rating-count"))
                         ).text)
                         user_rating_elem = driver.find_element(By.CSS_SELECTOR, '.average-user-rating')
-                        user_rating = int(user_rating_elem.get_attribute('class').split()[1].split('-')[2])
+                        if user_count != 0:
+                            user_rating = int(user_rating_elem.get_attribute('class').split()[1].split('-')[2])
+                        else:
+                            user_rating = None
                         flag = True
                     except IndexError:
                         print(json.dumps({'url': url, 'id': movie_id, 'error': 'index'}))
