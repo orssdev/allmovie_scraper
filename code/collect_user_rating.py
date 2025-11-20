@@ -47,7 +47,7 @@ except:
     pass
 
 try:
-    with open(os.path.join('..','data.jsonl'), 'r') as lines, open(os.path.join('..', 'users.jsonl'), 'a') as file:
+    with open(os.path.join('..', 'data', 'data.jsonl'), 'r') as lines, open(os.path.join('..', 'data', 'users.jsonl'), 'a') as file:
         for line in lines:
             data = json.loads(line)
             movie_id = data.get('id')

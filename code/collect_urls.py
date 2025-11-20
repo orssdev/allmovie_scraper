@@ -19,7 +19,7 @@ if rp.can_fetch('https://www.allmovie.com/genres', user_agent):
      response = requests.get('https://www.allmovie.com/genres', headers=HEADERS)
      soup = BeautifulSoup(response.text, 'html.parser')
      content = soup.select('.content a[href^="https"]')
-     # Unix pipe into file `python collect_urls.py > ../urls.txt`
+     # Unix pipe into file `python collect_urls.py > ../data/urls.txt`
      print('[')
      for a in content:
           href = a.get('href')
