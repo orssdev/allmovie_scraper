@@ -113,7 +113,7 @@ class AllMovie_Scraper(scrapy.Spider):
                 'url': url,
                 'title': title,
                 'id': movie_id,
-                'poster_url': [poster] if poster else [],
+                'images_url': [poster] if poster else [],
                 'directors': directors,
                 'genres': genres,
                 'subgenres': subgenres,
