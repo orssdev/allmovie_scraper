@@ -6,7 +6,7 @@ users = pd.read_json(os.path.join('..', 'data', 'users.jsonl'), lines=True).sort
 
 combined = data.join(users.set_index('id'), on='id')
 filtered = combined[combined['user_count'].notna()]
-result = filtered.drop(columns=['url', 'poster_url', 'country', 'themes', 'subgenres']).reset_index(drop=True)
+result = filtered.drop(columns=['url', 'image_urls', 'country', 'themes', 'subgenres', 'images']).reset_index(drop=True)
 result['directors'] = result['directors'].apply(lambda x: [d['name'] for d in x] if isinstance(x, list) else [])
 
 print(result)
