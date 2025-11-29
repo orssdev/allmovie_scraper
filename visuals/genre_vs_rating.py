@@ -12,10 +12,10 @@ genres = sorted(df_genre['genres'].unique())
 data = [df_genre[df_genre['genres'] == g]['user_rating'].dropna() for g in genres]
 
 plt.style.use('dark_background')
-plt.figure(figsize=(12, 8))
+plt.figure()
 
 plt.violinplot(data, showmeans=True, widths=0.9)
-plt.xticks(ticks=range(1, len(genres)+1), labels=genres, rotation=90)
+plt.xticks(ticks=range(1, len(genres)+1), labels=genres, rotation=90, fontsize=5)
 plt.title("Genre vs. Rating (Violin Plot)")
 plt.xlabel("Genre")
 plt.ylabel("User Rating")
