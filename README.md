@@ -38,7 +38,7 @@ A web scraping project for collecting and analyzing movie data from AllMovie usi
 
 Run the Scrapy spider to collect movie data:
 ```bash
-scrapy crawl allmovie
+scrapy crawl allmovie -o data/data.jsonl
 ```
 
 This will generate `data.jsonl` in the `data/` directory containing the scraped movie information.
