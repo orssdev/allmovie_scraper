@@ -48,6 +48,7 @@ print("R2:", r2_score(y_test, y_pred))
 
 importances = model.feature_importances_
 feat_names = X.columns
+plt.style.use('dark_background')
 plt.figure(figsize=(12, 8))
 plt.barh(feat_names, importances)
 plt.xlabel("Feature Importance")
